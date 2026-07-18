@@ -40,11 +40,11 @@ int main(int argc, char *argv[]) {
     }
 
     plsdev("pngcairo");                                 // set device     
-    plsfnam("simple_radiation_decay.png");                // set output file name
+    plsfnam("simple_radiation.png");                    // set output file name
     
     plinit();                                           // initialize plotting session
     plenv(0.0, MAX_TIME, 0, 7, 0, 0);                   // (xmin, xmax, ymin, ymax, just, axis)  
-    pllab("t (s)", "y ()", "Radiation Decay");          // define axis labels + title
+    pllab("t (s)", "y ()", "Simple Radiation Decay");   // define axis labels + title
     plline(NPTS, t, y);                                 // draw line through n points
     plend();                                            // end plotting session
 
