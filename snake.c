@@ -22,6 +22,8 @@ void draw(Vector2 fruit_position, int score, Vector2 snake[])
 	EndDrawing();
 }
 
+bool hit_detection(Vector2 a, Vector2 b) {return (a.x  - b.x > -20 && a.x -  b.x < 20 && b.y - a.y  > -20 && b.y - a.y  < 20); }
+
 int main()
 {
     int   direction = 0;
@@ -34,7 +36,7 @@ int main()
 	InitWindow(screenWidth, screenHeight, "Snake");
     
     Vector2 snake[100];
-    Vector2 head_position = { screenWidth/2.0f, screenHeight/2.0f};
+    Vector2 head_position =  { screenWidth/2.0f, screenHeight/2.0f};
     Vector2 fruit_position = { fruitPadding + rand() % (int)(screenWidth - 2 * fruitPadding), fruitPadding + rand() % (int)(screenHeight - 2 * fruitPadding)};
     
     SetTargetFPS(60);
@@ -54,24 +56,28 @@ int main()
     if (direction == 3) head_position.x -= speed;
     if (direction == 4) head_position.y += speed;
 
-    
-    if (   head_position.x  - fruit_position.x > -20 && head_position.x -  fruit_position.x < 20  
-        && fruit_position.y - head_position.y  > -20 && fruit_position.y - head_position.y  < 20)
-        {
+    if (hit_detection(head_position, fruit_position))
+    {
         score++;
         fruit_position.x = fruitPadding + rand() % (int)(screenWidth -  2 * fruitPadding);
         fruit_position.y = fruitPadding + rand() % (int)(screenHeight - 2 * fruitPadding);
     }
 
-    for (int i = score; i > 0; i--) snake[i] = snake[i-1];
+    for (int i = score; i > 0; i--)
+    { 
+        for (int j = 0; j < i; j++) if (hit_detection(snake[j], snake[i])) gameOver = true;
+        snake[i] = snake[i-1];
+    }
+        
     snake[0].x = head_position.x;
     snake[0].y = head_position.y;
     
     draw(fruit_position, score, snake);
 
-	}
+    }
 
-	CloseWindow();
+    CloseWindow();
+    printf("Game Over!");
 
 	return 0; 
 }
